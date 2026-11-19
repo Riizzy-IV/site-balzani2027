@@ -47,13 +47,20 @@ export function destroySmoothScroll() {
 
 export const getLenis = () => lenis
 
-/** Trava/destrava a rolagem (ex.: menu mobile aberto). */
-export function setScrollLocked(locked) {
+/**
+ * Trava/destrava a rolagem (menu mobile, pop-up de contato...).
+ * `owner` identifica quem pediu: a rolagem só volta quando ninguém mais estiver travando.
+ */
+const scrollLocks = new Set()
+export function setScrollLocked(locked, owner = 'default') {
+  if (locked) scrollLocks.add(owner)
+  else scrollLocks.delete(owner)
+  const any = scrollLocks.size > 0
   if (lenis) {
-    if (locked) lenis.stop()
+    if (any) lenis.stop()
     else lenis.start()
   }
-  document.documentElement.style.overflow = locked ? 'hidden' : ''
+  document.documentElement.style.overflow = any ? 'hidden' : ''
 }
 
 /** Rola até um alvo (seletor, elemento ou número). */

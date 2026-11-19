@@ -1,0 +1,17 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="76.4" height="76.4" viewBox="0 0 76.4 76.4" fill="none" xmlns="http://www.w3.org/2000/svg">
+<foreignObject x="-11.9" y="-11.9" width="100.2" height="100.2"><div xmlns="http://www.w3.org/1999/xhtml" style="backdrop-filter:blur(8.55px);clip-path:url(#bgblur_0_0_91_clip_path);height:100%;width:100%"></div></foreignObject><g id="Frame 36974" data-figma-bg-blur-radius="17.1">
+<rect x="6.2" y="6.2" width="64" height="64" rx="32" fill="black" fill-opacity="0.01"/>
+<g id="Group 30" filter="url(#filter1_f_0_91)">
+<path id="Vector" d="M70.2 38.2C70.2 55.8731 55.8731 70.2 38.2 70.2C20.5269 70.2 6.2 55.8731 6.2 38.2C6.2 20.5269 20.5269 6.2 38.2 6.2C55.8731 6.2 70.2 20.5269 70.2 38.2Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#FF611B"/>
+</g>
+<path id="Vector_2" d="M34.6513 46.12L41.1712 39.6C41.9412 38.83 41.9412 37.57 41.1712 36.8L34.6513 30.28" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" stroke="#FF611B"/>
+</g>
+<defs>
+<clipPath id="bgblur_0_0_91_clip_path" transform="translate(11.9 11.9)"><rect x="6.2" y="6.2" width="64" height="64" rx="32"/>
+</clipPath><filter id="filter1_f_0_91" x="0" y="0" width="76.4" height="76.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="2.6" result="effect1_foregroundBlur_0_91"/>
+</filter>
+</defs>
+</svg>

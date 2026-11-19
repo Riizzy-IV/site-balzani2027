@@ -2,6 +2,13 @@ import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { img } from '../data/home.js'
 import { PillButton } from '../components/ui.jsx'
+import CountUp from '../components/CountUp.jsx'
+
+const FACES = [
+  { src: 'face-1.png', name: 'Porte' },
+  { src: 'face-2.png', name: 'INC Empreendimentos' },
+  { src: 'face-3.png', name: 'Diálogo Engenharia' },
+]
 
 export default function Hero() {
   const ref = useRef(null)
@@ -61,13 +68,22 @@ export default function Hero() {
 
         <div className="hero__bottom">
           <div className="hero__proof">
-            <div className="hero__faces" aria-hidden>
-              <img src={img('face-1.png')} alt="" width="62.195" height="62.195" />
-              <img src={img('face-2.png')} alt="" width="62.195" height="62.195" />
-              <img src={img('face-3.png')} alt="" width="62.195" height="62.195" />
+            {/* hover igual ao da apresentação: logos se afastam, a focada sobe com anel laranja + nome */}
+            <div className="hero__faces">
+              {FACES.map((f) => (
+                <span key={f.src} className="face" tabIndex={0}>
+                  <img src={img(f.src)} alt={f.name} width="62.195" height="62.195" />
+                  <span className="face__tip" role="tooltip">
+                    {f.name}
+                  </span>
+                </span>
+              ))}
             </div>
             <p className="hero__proof-text">
-              <strong>+170 projetos</strong> entregues
+              <strong>
+                +<CountUp to={170} duration={2} /> projetos
+              </strong>{' '}
+              entregues
               <br />
               para incorporadoras e construtoras
             </p>

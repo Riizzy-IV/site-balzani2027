@@ -39,8 +39,10 @@ export default function Services() {
                   onClick={() => setOpen(isOpen ? -1 : i)}
                 >
                   <span className="accordion__label">
+                    {/* blur progressivo: camada nítida à esquerda, desfocada à direita */}
                     <span className="accordion__num" aria-hidden>
-                      {s.number}
+                      <span className="accordion__num-sharp">{s.number}</span>
+                      <span className="accordion__num-blur">{s.number}</span>
                     </span>
                     <span className="accordion__name">{s.title}</span>
                   </span>

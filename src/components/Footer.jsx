@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { CONTACT, NAV, img } from '../data/home.js'
 import { Kicker } from './ui.jsx'
+import { isCurrent, resolveHref } from '../lib/nav.js'
 
 function Newsletter() {
   const [sent, setSent] = useState(false)
@@ -66,7 +67,7 @@ export default function Footer() {
               </span>
               {CONTACT.linkedin.handle}
             </a>
-            <a className="social-chip social-chip--filled" href={CONTACT.whatsapp} target="_blank" rel="noreferrer">
+            <a className="social-chip social-chip--filled" href="#contato">
               <span className="social-chip__icon social-chip__icon--wa">
                 <img src={img('icon-whatsapp.svg')} alt="" />
               </span>
@@ -92,7 +93,7 @@ export default function Footer() {
                   alt=""
                 />
               )}
-              <a href={n.href}>
+              <a href={resolveHref(n.href)} aria-current={isCurrent(n.href) ? 'page' : undefined}>
                 <img src={img('bullet.svg')} alt="" width="7" height="7" />
                 {n.label}
               </a>

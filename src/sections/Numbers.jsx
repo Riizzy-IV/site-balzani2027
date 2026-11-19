@@ -1,6 +1,8 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { NUMBERS, img } from '../data/home.js'
+import { ESTADOS, MAP_H, MAP_W } from '../data/mapaBrasil.js'
+import { CLIENTES_POR_ESTADO } from '../data/clientesPorEstado.js'
 import { prefersReducedMotion } from '../lib/smoothScroll.js'
 import { SectionHeading } from '../components/ui.jsx'
 import CountUp from '../components/CountUp.jsx'
@@ -28,8 +30,6 @@ const PINS = [
   ['map-pin-xl.svg', 524.7, 447.6, 56.9406],
 ]
 
-const MAP_W = 752.494
-const MAP_H = 770.886
 
 // Anéis decorativos (px relativos ao grupo de 1515x1515 do Figma)
 const RINGS = [
@@ -50,8 +50,20 @@ const DOTS = [
 
 const u = (n) => `calc(var(--u) * ${n})`
 
-export default function Numbers() {
+// versão clara (página Sobre): estados inativos em cinza, pinos com centro laranja e linhas entre os números
+const pinSrc = (f, light) => (light ? `/img/sobre/${f.replace('map-pin-', 'pin-')}` : img(f))
+
+export default function Numbers({ theme = 'dark' }) {
+  const light = theme === 'light'
   const ref = useRef(null)
+  const [active, setActive] = useState(null)
+
+  // toque fora de um estado fecha o card (telas touch)
+  useEffect(() => {
+    const close = () => setActive(null)
+    window.addEventListener('click', close)
+    return () => window.removeEventListener('click', close)
+  }, [])
 
   useLayoutEffect(() => {
     if (prefersReducedMotion()) return
@@ -79,15 +91,17 @@ export default function Numbers() {
   }, [])
 
   return (
-    <section className="numbers" ref={ref}>
-      <div className="numbers__rings" aria-hidden data-parallax="0.08">
-        {RINGS.map(([f, x, y, s]) => (
-          <img key={f} src={img(f)} alt="" style={{ left: u(x), top: u(y), width: u(s), height: u(s) }} />
-        ))}
-        {DOTS.map(([f, x, y, s], i) => (
-          <img key={i} src={img(f)} alt="" style={{ left: u(x), top: u(y), width: u(s), height: u(s) }} />
-        ))}
-      </div>
+    <section className={`numbers ${light ? 'numbers--light' : ''}`} ref={ref}>
+      {!light && (
+        <div className="numbers__rings" aria-hidden data-parallax="0.08">
+          {RINGS.map(([f, x, y, s]) => (
+            <img key={f} src={img(f)} alt="" style={{ left: u(x), top: u(y), width: u(s), height: u(s) }} />
+          ))}
+          {DOTS.map(([f, x, y, s], i) => (
+            <img key={i} src={img(f)} alt="" style={{ left: u(x), top: u(y), width: u(s), height: u(s) }} />
+          ))}
+        </div>
+      )}
 
       <SectionHeading kicker="Nossos números" className="numbers__heading">
         Do planejamento ao sucesso do seu lançamento
@@ -95,12 +109,42 @@ export default function Numbers() {
 
       <div className="numbers__body container">
         <div className="br-map" data-reveal>
-          <img className="br-map__img" src={img('map-brasil.svg')} alt="Mapa do Brasil com os estados atendidos" />
+          {/* mapa inline (um path por estado) para o hover por estado, como na apresentação */}
+          <svg
+            className="br-map__img"
+            viewBox={`0 0 ${MAP_W} ${MAP_H}`}
+            role="img"
+            aria-label="Mapa do Brasil com os estados onde atuamos"
+          >
+            {ESTADOS.map((e) => {
+              const interactive = CLIENTES_POR_ESTADO[e.uf] != null
+              return (
+                <path
+                  key={e.uf}
+                  d={e.d}
+                  fill={e.ativo ? '#2F79A8' : light ? '#B0B0B0' : '#EDEDED'}
+                  className={`${interactive ? 'is-interactive' : ''} ${active === e.uf ? 'is-active' : ''}`}
+                  onPointerEnter={interactive ? (ev) => ev.pointerType === 'mouse' && setActive(e.uf) : undefined}
+                  onPointerLeave={interactive ? (ev) => ev.pointerType === 'mouse' && setActive(null) : undefined}
+                  onClick={
+                    interactive
+                      ? (ev) => {
+                          ev.stopPropagation()
+                          setActive((a) => (a === e.uf ? null : e.uf))
+                        }
+                      : undefined
+                  }
+                >
+                  <title>{e.nome}</title>
+                </path>
+              )
+            })}
+          </svg>
           {PINS.map(([f, x, y, s], i) => (
             <img
               key={i}
               className="br-map__pin"
-              src={img(f)}
+              src={pinSrc(f, light)}
               alt=""
               style={{
                 left: `${(x / MAP_W) * 100}%`,
@@ -112,8 +156,9 @@ export default function Numbers() {
         </div>
 
         <ul className="stats">
-          {NUMBERS.map((n) => (
+          {NUMBERS.map((n, i) => (
             <li key={n.label} className="stat" data-reveal>
+              {light && i > 0 && <img className="stat__line" src="/img/sobre/stat-line.svg" alt="" aria-hidden />}
               <span className="stat__value">
                 <img src={img('icon-plus.svg')} alt="+" width="22" height="23" />
                 <span className="stat__num">
