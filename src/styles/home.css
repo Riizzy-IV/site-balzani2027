@@ -1542,6 +1542,14 @@
   padding-top: calc(var(--u) * 252);
   overflow: hidden;
 }
+/* corta só na horizontal (os cards passam da borda direita); na vertical não pode cortar,
+   senão a descrição do case some embaixo durante a entrada/arraste */
+@supports (overflow: clip) {
+  .cases {
+    overflow: visible;
+    overflow-x: clip;
+  }
+}
 .cases__title {
   position: relative;
   margin-left: calc(50% - var(--u) * 960 + var(--u) * 108);
@@ -1609,6 +1617,14 @@
   display: block;
   border-radius: max(16px, calc(var(--u) * 24));
 }
+/* contorno de foco só para teclado (no clique/arraste com mouse aparecia uma borda branca) */
+.case-card__link:focus:not(:focus-visible) {
+  outline: none;
+}
+.case-card__link:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+}
 .case-card__info h3 a {
   transition: color 0.25s ease;
 }
@@ -1638,6 +1654,7 @@
 }
 .cases__next {
   position: absolute;
+  z-index: 2; /* sempre por cima dos cards, mesmo durante o arraste */
   left: calc(50% - var(--u) * 960 + var(--u) * 1062);
   top: calc(var(--u) * 206);
   display: flex;

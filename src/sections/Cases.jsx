@@ -47,6 +47,7 @@ export default function Cases() {
       edgeResistance: 0.85,
       dragClickables: true, // o card é um link: dá para começar a arrastar em cima dele
       minimumMovement: 6,
+      zIndexBoost: false, // padrão do Draggable joga a fileira na frente de tudo e esconde o botão laranja
       cursor: 'grab',
       activeCursor: 'grabbing',
       snap: { x: (v) => Math.round(v / step()) * step() },
